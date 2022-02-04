@@ -4,18 +4,27 @@
 (def default-workout
   {:title               "Default Workout"
    :exercises-count     4
-   :work                30
-   :rest                30
+   :work                5                                   ;30
+   :rest                5                                   ;30
    :rounds              3
    :rest-between-rounds 60})
 
-(def current-workout (assoc default-workout
-                       :timer-id nil
-                       :seconds-passed 0
-                       :current-activity :not-started))     ; (or :not-started :countdown :work :rest :pause :finished)
+(def init-db (merge
+               default-workout
+               {:timer-id        nil
+                :seconds-passed  0
+                :workout-paused? false
+                :countdown       3
+                ;; Screens are: :setup :countdown :workout :workout-paused :workout-rest :finished.
+                :current-screen  :setup}))
 
-(def init-db default-workout)
+;; Subscriptions
+(rf/reg-sub
+  :current-screen
+  (fn [db _]
+    (:current-screen db)))
 
+;; Events
 (rf/reg-event-db
   :initialize-db
   (fn [_ _]

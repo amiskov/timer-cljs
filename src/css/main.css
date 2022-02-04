@@ -17,6 +17,7 @@
         max-width: 800px;
         margin: auto;
         height: 100vh;
+        position: relative;
     }
 
     .wrapper {
@@ -64,10 +65,12 @@
     }
 
     .countdown_tick {
+        height: 100vh;
         animation: countdown-blink 1s infinite;
     }
 
     .countdown_go {
+        height: 100vh;
         background: yellow;
     }
 
@@ -239,6 +242,7 @@
 
     .phase-title {
         font-size: 3em;
+        font-weight: bold;
     }
 
     .exercise {

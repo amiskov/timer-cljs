@@ -4,11 +4,22 @@
     [app.db]
     [re-frame.core :as rf]
     ;; components
-    [app.components.setup :refer [setup]]))
+    [app.components.setup :refer [setup]]
+    [app.components.countdown :refer [countdown]]
+    [app.components.workout :refer [workout]]))
 
 (defn app []
-  [:main
-   [setup]])
+  (let [screen @(rf/subscribe [:current-screen])]
+    (js/console.log "screen:" screen)
+    [:main.timer
+     [:div.wrapper {:class (if (= screen :workout-paused) "paused" "")}
+      (case screen
+        :setup [setup]
+        :countdown [countdown]
+        :workout [workout]
+        ; same component for paused workout, only the class for .wrapper above is different
+        :workout-paused [workout]
+        (str "Screen " screen " is not implemented."))]]))
 
 ;; start is called by init and after code reloading finishes
 (defn ^:dev/after-load start []
