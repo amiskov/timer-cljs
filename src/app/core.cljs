@@ -4,11 +4,11 @@
     [app.db]
     [re-frame.core :as rf]
     ;; components
-    [app.components.counter :refer [counter]]))
+    [app.components.setup :refer [setup]]))
 
 (defn app []
   [:main
-   [counter]])
+   [setup]])
 
 ;; start is called by init and after code reloading finishes
 (defn ^:dev/after-load start []
