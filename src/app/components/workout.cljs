@@ -1,16 +1,17 @@
 (ns app.components.workout
   (:require [re-frame.core :as rf]))
 
-(defn workout []
+(defn workout [{:keys [paused?]}]
+  (prn "paused?" paused?)
   (let [seconds-passed @(rf/subscribe [:seconds-passed])]
-    [:div.phase.phase_work
+    [:div.phase.phase_work {:class (when paused? "phase_work-paused")}
      [:h2.phase-title (str "Work: " seconds-passed)]
      [:p.exercise "Exercise 1 of 10"]
      [:p.round "Round 1 of 3"]
      [:div.row.row_btn.row_pause
       [:button.btn.btn_pause
        {:on-click #(rf/dispatch [:toggle-workout-pause])}
-       "Pause"]]
+       (if paused? "Resume" "Pause")]]
      [:div.row.row_btn.row_cancel
       [:button.btn.btn_cancel
        {:on-click #(rf/dispatch [:stop-workout-timer])}

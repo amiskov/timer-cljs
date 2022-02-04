@@ -12,13 +12,13 @@
   (let [screen @(rf/subscribe [:current-screen])]
     (js/console.log "screen:" screen)
     [:main.timer
-     [:div.wrapper {:class (if (= screen :workout-paused) "paused" "")}
+     ;[:div.wrapper {:class (if (= screen :workout-paused) "paused" "")}]
+     [:div.wrapper
       (case screen
         :setup [setup]
         :countdown [countdown]
-        :workout [workout]
-        ; same component for paused workout, only the class for .wrapper above is different
-        :workout-paused [workout]
+        :workout [workout {:paused? false}]
+        :workout-paused [workout {:paused? true}]
         (str "Screen " screen " is not implemented."))]]))
 
 ;; start is called by init and after code reloading finishes

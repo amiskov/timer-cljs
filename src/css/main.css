@@ -24,20 +24,22 @@
         margin: auto;
     }
 
-    .wrapper.paused::after {
+    .phase_work-paused {
+        animation: paused-blink 1s infinite;
+    }
+
+    .phase_work-paused::after {
         z-index: 1;
         content: "॥ Paused";
         position: absolute;
         width: 100%;
         top: 0;
+        left: 0;
         text-align: center;
         font-weight: bold;
         white-space: nowrap;
         background: yellow;
-    }
-
-    .wrapper.paused .phase {
-        animation: paused-blink 1s infinite;
+        color: #000;
     }
 
     @keyframes paused-blink {
@@ -164,6 +166,10 @@
     .row_pause {
         margin: 2em 0 1em;
         text-align: left;
+    }
+
+    .row_pause .btn {
+        padding-left: 40px;
     }
 
     .btn {
