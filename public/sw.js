@@ -1,9 +1,17 @@
 const cacheName = 'cache-v1';
+
 const resourcesToPrecache = [
     '/',
     'index.html',
     '/css/main.css',
-    '/js/main.js'
+    '/js/main.js',
+    './style.css',
+    './img/arny_thumbs_up.png',
+    './sounds/bell.mp3',
+    './sounds/alert.mp3',
+    './sounds/count_beep.mp3',
+    './sounds/count_tick.mp3',
+    './sounds/final.mp3'
 ];
 
 self.addEventListener('install', event => {

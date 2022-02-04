@@ -3,12 +3,7 @@
   "name": "CLJS template",
   "icons": [
     {
-      "src": "/img/clojure.svg",
-      "type": "image/svg+xml",
-      "sizes": "512x512"
-    },
-    {
-      "src": "/img/clojure.png",
+      "src": "/img/timer.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
