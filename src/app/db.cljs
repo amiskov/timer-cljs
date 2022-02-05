@@ -1,26 +1,17 @@
 (ns app.db
   (:require [re-frame.core :as rf]))
 
-(def default-workout
-  {:title               "Default Workout"
-   :exercises-count     4
-   :work                5                                   ;30
-   :rest                5                                   ;30
-   :rounds              3
-   :rest-between-rounds 60})
-
-(def init-db (merge
-               default-workout
-               {:seconds-passed    0
-
-                :current-work-time (:work default-workout)
-                :current-rest-time (:rest default-workout)
-                :current-exercise  1
-                :current-round     1
-
-                :countdown         3
-                ;; Screens are: :setup :countdown :workout-work :workout-paused :workout-rest :finished.
-                :current-screen    :setup-screen}))
+(def init-db {:seconds-passed  0
+              :countdown       3
+              :workout-setup   {:exercises-count     2
+                                :work                5
+                                :rest                5
+                                :rounds              2
+                                :rest-between-rounds 7}
+              ; TODO: Probably, use cofx for :running-workout?
+              :running-workout {#_will_be_populated_on_workout_start}
+              ; Screens are: :setup :countdown :workout-work :workout-paused :workout-rest :finished.
+              :current-screen  :setup-screen})
 
 ;; Subscriptions
 (rf/reg-sub

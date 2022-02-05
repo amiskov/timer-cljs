@@ -6,21 +6,20 @@
     ;; components
     [app.components.setup :refer [setup]]
     [app.components.countdown :refer [countdown]]
-    [app.components.workout :refer [workout]]))
+    [app.components.workout :refer [workout]]
+    [app.components.finished :refer [finished]]))
 
 (defn app []
   (let [screen @(rf/subscribe [:current-screen])]
-    (js/console.log "screen:" screen)
     [:main.timer
-     ;[:div.wrapper {:class (if (= screen :workout-paused) "paused" "")}]
      [:div.wrapper
       (case screen
         :setup-screen [setup]
         :countdown-screen [countdown]
         :workout-work-screen [workout {:paused? false}]
         :workout-paused-screen [workout {:paused? true}]
-        :workout-rest-screen [workout {:rest? true}]
-        (str "Screen " screen " is not implemented."))]]))
+        :finished-screen [finished]
+        (str "There's no " screen))]]))
 
 ;; start is called by init and after code reloading finishes
 (defn ^:dev/after-load start []
