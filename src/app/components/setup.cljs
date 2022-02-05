@@ -1,6 +1,5 @@
 (ns app.components.setup
-  (:require [re-frame.core :as rf]
-            [cljs.core.match :refer-macros [match]]))
+  (:require [re-frame.core :as rf]))
 
 (defn setup-row [setup-field cls lbl rng selected]
   (let [row-class (case cls
@@ -56,34 +55,34 @@
         {:keys [exercises-count work rest rounds rest-between-rounds]} (:workout-setup db)
         last-exercise? (= exercises-count exercise)
         last-round? (= rounds round)
-        workout-finished? (and last-exercise? last-round? (= 0 phase-remaining-time))
-        new-running-workout (case phase
-                              :work (match [phase-remaining-time last-exercise? last-round?]
-                                           [0 true true] (assoc rw :phase :finished
-                                                                   :phase-remaining-time 0)
-                                           [0 true _] (assoc rw :phase :rest-after-round
-                                                                :phase-remaining-time rest-between-rounds)
-                                           [0 _ _] (assoc rw :phase :rest
-                                                             :phase-remaining-time rest)
-                                           :else (assoc rw :phase :work
-                                                           :phase-remaining-time (dec phase-remaining-time)))
-                              :rest (case phase-remaining-time
-                                      0 (assoc rw :phase :work
-                                                  :exercise (inc exercise)
-                                                  :phase-remaining-time work)
-                                      (assoc rw :phase :rest
-                                                :phase-remaining-time (dec phase-remaining-time)))
-                              :rest-after-round (case phase-remaining-time
-                                                  0 (assoc rw :phase :work
-                                                              :phase-remaining-time work
-                                                              :exercise 1
-                                                              :round (inc round))
-                                                  (assoc rw :phase :rest-after-round
-                                                            :phase-remaining-time (dec phase-remaining-time)))
-                              rw)]
+        phase-time-finished? (= 0 phase-remaining-time)
+        workout-finished? (and last-exercise? last-round? phase-time-finished?)]
     (merge db {:seconds-passed  (if workout-finished? 0 (inc (:seconds-passed db)))
                :current-screen  (if workout-finished? :finished-screen :workout-work-screen)
-               :running-workout new-running-workout})))
+               :running-workout (case phase
+                                  :work (cond
+                                          workout-finished? (assoc rw :phase :finished
+                                                                      :phase-remaining-time 0)
+                                          (and phase-time-finished? last-exercise?) (assoc rw :phase :rest-after-round
+                                                                                              :phase-remaining-time rest-between-rounds)
+                                          phase-time-finished? (assoc rw :phase :rest
+                                                                         :phase-remaining-time rest)
+                                          :else (assoc rw :phase :work
+                                                          :phase-remaining-time (dec phase-remaining-time)))
+                                  :rest (case phase-remaining-time
+                                          0 (assoc rw :phase :work
+                                                      :exercise (inc exercise)
+                                                      :phase-remaining-time work)
+                                          (assoc rw :phase :rest
+                                                    :phase-remaining-time (dec phase-remaining-time)))
+                                  :rest-after-round (case phase-remaining-time
+                                                      0 (assoc rw :phase :work
+                                                                  :phase-remaining-time work
+                                                                  :exercise 1
+                                                                  :round (inc round))
+                                                      (assoc rw :phase :rest-after-round
+                                                                :phase-remaining-time (dec phase-remaining-time)))
+                                  rw)})))
 
 (rf/reg-event-fx
   :on-tick
