@@ -17,15 +17,15 @@
 (rf/reg-event-fx
   :start-countdown-timer
   (fn [{:keys [db]}]
-    {:handle-timer {:timer-type :countdown
+    {:handle-timer {:timer-type :countdown-timer
                     :action     :start}
-     :db           (merge db {:current-screen :countdown})}))
+     :db           (merge db {:current-screen :countdown-screen})}))
 
 (rf/reg-event-fx
   :stop-countdown-timer
   (fn [{:keys [db]}]
-    {:handle-timer {:timer-type :countdown
+    {:handle-timer {:timer-type :countdown-timer
                     :action     :stop}
-     :db           (merge db {:current-screen :workout
+     :db           (merge db {:current-screen :workout-work-screen
                               :countdown      3})
      :dispatch     [:start-workout-timer]}))

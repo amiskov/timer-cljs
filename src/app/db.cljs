@@ -11,12 +11,16 @@
 
 (def init-db (merge
                default-workout
-               {:timer-id        nil
-                :seconds-passed  0
-                :workout-paused? false
-                :countdown       3
-                ;; Screens are: :setup :countdown :workout :workout-paused :workout-rest :finished.
-                :current-screen  :setup}))
+               {:seconds-passed    0
+
+                :current-work-time (:work default-workout)
+                :current-rest-time (:rest default-workout)
+                :current-exercise  1
+                :current-round     1
+
+                :countdown         3
+                ;; Screens are: :setup :countdown :workout-work :workout-paused :workout-rest :finished.
+                :current-screen    :setup-screen}))
 
 ;; Subscriptions
 (rf/reg-sub

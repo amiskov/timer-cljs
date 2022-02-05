@@ -47,17 +47,29 @@
     db))
 
 ;; Events
+(defn update-workout-info [db]
+  (let [seconds-passed (:seconds-passed db)
+        current-exercise (:current-exercise db)
+        current-work-time (:current-work-time db)
+        current-round (:current-round db)]
+
+    (merge db
+           {:seconds-passed (inc seconds-passed)
+            :current-work-time (case (:current-screen db)
+                                 (dec current-work-time))
+            :current-screen :workout-rest-screen})))
+
+
 (rf/reg-event-fx
   :on-tick
   (fn [{:keys [db]} [_ timer-type]]
     (js/console.log "timer type:" timer-type)
     (case timer-type
-      :countdown (if (> (:countdown db) 0)
-                   {:db (update db :countdown dec)}
-                   {
-                    :dispatch [:stop-countdown-timer]})
+      :countdown-timer (if (> (:countdown db) 0)
+                         {:db (update db :countdown dec)}
+                         {:dispatch [:stop-countdown-timer]})
 
-      :workout {:db (update db :seconds-passed inc)}
+      :workout-timer {:db (update-workout-info db)}
 
       ; default
       (do (prn timer-type " is not implemented.")

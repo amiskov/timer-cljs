@@ -15,10 +15,11 @@
      ;[:div.wrapper {:class (if (= screen :workout-paused) "paused" "")}]
      [:div.wrapper
       (case screen
-        :setup [setup]
-        :countdown [countdown]
-        :workout [workout {:paused? false}]
-        :workout-paused [workout {:paused? true}]
+        :setup-screen [setup]
+        :countdown-screen [countdown]
+        :workout-work-screen [workout {:paused? false}]
+        :workout-paused-screen [workout {:paused? true}]
+        :workout-rest-screen [workout {:rest? true}]
         (str "Screen " screen " is not implemented."))]]))
 
 ;; start is called by init and after code reloading finishes

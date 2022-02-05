@@ -24,11 +24,11 @@
         margin: auto;
     }
 
-    .phase_work-paused {
+    .phase_paused {
         animation: paused-blink 1s infinite;
     }
 
-    .phase_work-paused::after {
+    .phase_paused::after {
         z-index: 1;
         content: "॥ Paused";
         position: absolute;
