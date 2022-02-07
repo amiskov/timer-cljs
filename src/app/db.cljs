@@ -12,12 +12,6 @@
               ; Screens are: :setup :countdown :workout-work :workout-paused :workout-rest :finished.
               :current-screen  :setup-screen})
 
-;; Subscriptions
-(rf/reg-sub
-  :current-screen
-  (fn [db _]
-    (:current-screen db)))
-
 ;; Events
 (rf/reg-event-db
   :initialize-db

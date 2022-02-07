@@ -1,25 +1,15 @@
 (ns app.core
   (:require
     [reagent.dom :as rdom]
-    [app.db]
     [re-frame.core :as rf]
-    ;; components
-    [app.components.setup :refer [setup]]
-    [app.components.countdown :refer [countdown]]
-    [app.components.workout :refer [workout]]
-    [app.components.finished :refer [finished]]))
+    [app.db]
+    [app.timer]
+    [app.components.display :refer [display]]))
 
 (defn app []
-  (let [screen @(rf/subscribe [:current-screen])]
-    [:main.timer
-     [:div.wrapper
-      (case screen
-        :setup-screen [setup]
-        :countdown-screen [countdown]
-        :workout-work-screen [workout {:paused? false}]
-        :workout-paused-screen [workout {:paused? true}]
-        :finished-screen [finished]
-        (str "There's no " screen))]]))
+  [:main.timer
+   [:div.wrapper
+    [display]]])
 
 ;; start is called by init and after code reloading finishes
 (defn ^:dev/after-load start []
