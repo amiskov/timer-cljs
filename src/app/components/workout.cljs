@@ -40,7 +40,6 @@
     {:handle-timer {:timer-type :workout-timer
                     :action     :start}
      :db           (merge db {:current-screen  :workout-work-screen
-                              :seconds-passed  0
                               :running-workout {:round                1
                                                 :exercise             1
                                                 :phase                :work
@@ -59,6 +58,10 @@
 (rf/reg-event-fx
   :stop-workout-timer
   (fn [{:keys [db]} [_ screen]]
-    {:handle-timer {:timer-type :workout-timer
-                    :action     :stop}
-     :db           (assoc db :current-screen screen)}))
+    (merge {:handle-timer {:timer-type :workout-timer
+                           :action     :stop}
+            :db           (assoc db :current-screen screen)}
+           (if (= screen :setup-screen)
+             ; stop playing audios when setup screen is requested
+             {:stop-all-audios nil}
+             {}))))

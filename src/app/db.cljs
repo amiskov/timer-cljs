@@ -1,8 +1,7 @@
 (ns app.db
   (:require [re-frame.core :as rf]))
 
-(def init-db {:seconds-passed  0
-              :countdown       3
+(def init-db {:countdown       3
               :workout-setup   {:exercises-count     2
                                 :work                5
                                 :rest                5

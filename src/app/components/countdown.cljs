@@ -19,6 +19,7 @@
   (fn [{:keys [db]}]
     {:handle-timer {:timer-type :countdown-timer
                     :action     :start}
+     :play-audio   "count_tick"
      :db           (merge db {:current-screen :countdown-screen})}))
 
 (rf/reg-event-fx
