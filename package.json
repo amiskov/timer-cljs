@@ -9,7 +9,7 @@
     "release": "shadow-cljs release app --config-merge config/prod.edn",
     "twdev": "npx tailwindcss -i ./src/css/main.css -o ./public/css/main.css --watch\n",
     "pom": "shadow-cljs pom",
-    "clean": "rm -rf target && rm -rf public/js"
+    "clean": "rm -rf target && rm -rf public/js/* && rm -rf public/js/*.js"
   },
   "keywords": [],
   "author": "",

@@ -146,7 +146,7 @@
   (let [timer-id (atom nil)]
     (fn [{:keys [action timer-type]}]
       (case action
-        :start (do (reset! timer-id (js/setInterval #(rf/dispatch [:on-tick timer-type]) 300))
+        :start (do (reset! timer-id (js/setInterval #(rf/dispatch [:on-tick timer-type]) 1000))
                    (.log js/console (str "Timer " timer-type " started.")))
         :stop (do (js/clearInterval @timer-id)
                   (reset! timer-id nil)
