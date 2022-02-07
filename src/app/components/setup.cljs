@@ -17,9 +17,11 @@
 (defn setup []
   (let [{:keys [exercises-count work rest rounds rest-between-rounds]} @(rf/subscribe [:workout-setup])]
     [:div.timer
-     [:form {:on-submit
-             (fn [ev] (.preventDefault ev)
-               (rf/dispatch [:start-countdown-timer]))}
+     [:form {:on-submit (fn [ev]
+                          (.preventDefault ev)
+                          ;; Make audio playable on mobile
+                          (.resumeAudioContext js/window)
+                          (rf/dispatch [:start-countdown-timer]))}
       [:section.repeats
        [:section.exercises
         [:section.phases
@@ -50,7 +52,6 @@
     (:workout-setup db)))
 
 ;; Events
-
 (defn update-running-workout [db]
   "Returns new :running-workout value."
   (let [{:keys [round exercise phase phase-remaining-time] :as rw} (:running-workout db)
