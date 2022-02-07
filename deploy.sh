@@ -9,7 +9,7 @@
 set -e
 
 # build
-npm run clean && npm run release
+npm run clean && npm run release && npm run twprod
 
 # navigate into the build output directory
 cd public
@@ -22,6 +22,6 @@ git add -A
 git commit -m 'deploy'
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:amiskov/timer.git master:gh-pages
+git push -f git@github.com:amiskov/timer-cljs.git master:gh-pages
 
 cd -
