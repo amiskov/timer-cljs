@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="./css/main.css" type="text/css">
+    <title>Timer 2</title>
+
+    <!-- Uncomment to use PWA assets:
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ADD8E6">
+    <link rel="apple-touch-icon" href="/img/clojure.png">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => {
+                        console.log('ServiceWorker has been registered.', reg)
+                    })
+                    .catch(err => {
+                        console.log("ServiceWorker registration has been failed.", err)
+                    });
+            });
+        }
+    </script>
+
+    -->
+
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="app"></div>
+<script>
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioContext = new AudioContext();
+
+    audioContext.onstatechange = function () {
+        console.log("audioContext state changed:", this.state);
+    }
+    const samples = {};
+
+    function loadSample(filename) {
+        const key = filename;
+        const url = `./sounds/${filename}.mp3`;
+
+        if (samples[key] == null) {
+            window.fetch(url)
+                .then(response => response.arrayBuffer())
+                .then(arrayBuffer => {
+                    return audioContext.decodeAudioData(arrayBuffer,
+                        audioBuffer => {
+                            samples[key] = audioBuffer;
+                            console.log(key, "sample has been loaded.")
+                        },
+                        error =>
+                            console.error(error)
+                    )
+                })
+        }
+    }
+
+    function resumeAudioContext() {
+        console.log('Go! button pressed, resume audioContext.')
+        audioContext.resume();
+    }
+
+    function play(filename) {
+        const source = audioContext.createBufferSource();
+        source.buffer = samples[filename];
+        source.connect(audioContext.destination);
+        source.start(0);
+    }
+
+    function stopAllAudios() {
+        audioContext.close();
+        audioContext = new AudioContext();
+    }
+
+    for (const filename of ["count_tick", "count_beep", "alert", "bell", "final"]) {
+        loadSample(filename);
+    }
+</script>
+<script src="./js/main.js" type="text/javascript"></script>
+</body>
+</html>
