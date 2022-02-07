@@ -4,7 +4,7 @@
 (defn workout [{:keys [paused?]}]
   (let [{:keys [running-workout workout-setup]} @(rf/subscribe [:workout])
         {:keys [round exercise phase phase-remaining-time]} running-workout
-        {:keys [exercises-count work rest rounds rest-between-rounds]} workout-setup]
+        {:keys [exercises-count rounds]} workout-setup]
     [:div.phase {:class (str
                           (if (or (= :rest phase) (= :rest-after-round phase)) "phase_rest" "phase_work")
                           (when paused? " phase_paused"))}
@@ -45,7 +45,6 @@
                                                 :exercise             1
                                                 :phase                :work
                                                 :phase-remaining-time (get-in db [:workout-setup :work])}})}))
-
 
 (rf/reg-event-fx
   :toggle-workout-pause

@@ -87,18 +87,18 @@
 (rf/reg-event-fx
   :on-tick
   (fn [{:keys [db]} [_ timer-type]]
-    (let [new-db (update-running-workout db)]
-      (case timer-type
-        :countdown-timer (if (> (:countdown db) 0)
-                           {:db (update db :countdown dec)}
-                           {:dispatch [:stop-countdown-timer]})
-        :workout-timer (if (not= :finished-screen (:current-screen db))
+    (case timer-type
+      :countdown-timer (if (> (:countdown db) 0)
+                         {:db (update db :countdown dec)}
+                         {:dispatch [:stop-countdown-timer]})
+      :workout-timer (let [new-db (update-running-workout db)]
+                       (if (not= :finished-screen (:current-screen db))
                          {:db new-db}
                          {:db       new-db
-                          :dispatch [:stop-workout-timer :finished-screen]})
-        ; default
-        (do (js/console.log timer-type " is not implemented.")
-            {:db db})))))
+                          :dispatch [:stop-workout-timer :finished-screen]}))
+      ; default
+      (do (js/console.log timer-type " is not implemented.")
+          {:db db}))))
 
 (rf/reg-event-db
   :update-setup
